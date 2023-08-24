@@ -1,0 +1,53 @@
+containers:
+  batect-container:
+    image: alpine:3.11.3
+  build-fastify-env:
+    image: node:16-alpine3.17
+    volumes:
+      - local: .
+        container: /code
+        options: cached
+      - type: cache
+        name: node_modules
+        container: /code/node_modules
+    working_directory: /code
+
+  fastify-db:
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - local: ./postgres-data
+        container: /var/lib/postgresql/data
+    environment: 
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: appuser
+      POSTGRES_DB: test-db
+
+tasks:
+  say-hello:
+    description: Say hello to the nice person xd
+    run:
+      container: batect-container
+      command: echo 'Hello world!'
+  
+  # task for running fastify app
+  install-dep:
+    description: Install dependencies needed to build fastify app
+    run:
+      container: build-fastify-env
+      command: npm install
+
+  # task for running fastify app
+  start-server:
+    description: Run fastify application
+    run:
+      environment:
+        PORT: 8080
+        POSTGRES_URI: postgres://appuser:password@fastify-db/test-db
+      container: build-fastify-env
+      command: npm run start
+      ports:
+        - 5000:8080
+    dependencies:
+        - fastify-db

@@ -1,2 +1,8 @@
 node_modules
 coverage
+.idea
+.vscode
+.batect
+.env
+
+postgres-data
