@@ -1,0 +1,56 @@
+{
+  "productId": 1,
+  "productName": "Some name",
+  "price": 12.50
+}
+
+const schema = {
+  type: "object",
+  required: ["productId"]
+  properties: {
+    "productId": {
+      description: "Unique id for a product",
+      type: "integer"
+    },
+    "productName": {
+      description: "product name",
+      type: "string",
+      minLength: 10
+    },
+    "price": {
+      description: "Price of the product",
+      type: "integer"
+    }
+  }
+}
+
+[
+  {
+    "productId": 1,
+    "productName": "Some name",
+    "price": 12.50
+  }
+]
+
+const schemaArray = {
+  type: 'array',
+  items: {
+    type: 'object',
+    required: ["productId"]
+    properties: {
+      "productId": {
+        description: "Unique id for a product",
+        type: "integer"
+      },
+      "productName": {
+        description: "product name",
+        type: "string",
+        minLength: 10
+      },
+      "price": {
+        description: "Price of the product",
+        type: "integer"
+      }
+    }
+  }
+}

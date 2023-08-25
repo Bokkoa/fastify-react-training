@@ -1,12 +1,14 @@
 const fastify = require('fastify');
 const db = require('./plugin/database')
 const testRoute = require('./route/tempTestRoute')
+const swaggerPlugin = require('./plugin/swagger')
 
 const build = (opts = {}) => {
   const app = fastify(opts);
 
   // register plugins
   app.register(db);
+  app.register(swaggerPlugin);
 
   // register route
   app.register(testRoute, { prefix: 'api/v1/test'})
@@ -16,6 +18,9 @@ const build = (opts = {}) => {
       hello: 'world',
     });
   });
+
+  app.ready()
+  app.swagger()
   return app;
 };
 
