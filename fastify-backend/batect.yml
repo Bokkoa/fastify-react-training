@@ -34,10 +34,14 @@ containers:
       POSTGRES_DB: test-db
 
 tasks:
+  start-dev-db:
+    description: start development database
+    run:
+      container: fatify-db
   start-test-db:
     description: start test database
     run:
-      container: db-test
+      container: fatify-db-test
 
   say-hello:
     description: Say hello to the nice person xd
