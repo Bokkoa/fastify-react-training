@@ -24,7 +24,21 @@ containers:
       POSTGRES_USER: appuser
       POSTGRES_DB: test-db
 
+  fatify-db-test:
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    environment: 
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: appuser
+      POSTGRES_DB: test-db
+
 tasks:
+  start-test-db:
+    description: start test database
+    run:
+      container: db-test
+
   say-hello:
     description: Say hello to the nice person xd
     run:
@@ -51,3 +65,15 @@ tasks:
         - 5000:8080
     dependencies:
         - fastify-db
+
+
+  test-watch:
+    description: test running in watch mode
+    run:
+      container: build-fastify-env
+      environment:
+        PORT: 8080
+        POSTGRES_URI: postgres://appuser:password@fastify-db-test/test-db
+      command: npm run test:watch
+    dependencies:
+      - fastify-db-test
