@@ -17,5 +17,9 @@
     },
     "rules": {
         "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
-    }
+    },
+    "ignorePatterns": [
+        "node_modules/",
+        "migrations/"
+    ]
 }
